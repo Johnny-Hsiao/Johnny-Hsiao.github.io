@@ -1,13 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="styles/styles.css">
-  <meta name="google-site-verification" content="tClqOwBQbNWgfKD9I7Dyf0zOhj8sYJaTIGS1tjOhsSg" />
-  <title>Tiny Dino Labs</title>
 </head>
 <body>
-  <h1>Tiny Dino Labs</h1>
-  <p>Page under construction</p>
+  <p>Test chat page</p>
+      <script>
+        (function(d,t) {
+          var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+          g.src="https://test.ca.one-stop-talk.stg.gcp.trchq.com/embed.js"
+          s.parentNode.insertBefore(g,s);
+          g.onload=function(){
+            new window.VirtualCareMessengerEncrypted({
+              domain: 'https://test.ca.one-stop-talk.stg.gcp.trchq.com',
+              ws:  'wss://test.ca.one-stop-talk.stg.gcp.trchq.com/cable',
+              app_id: "D2p3uNwqDtu7pknnG5WAZB6Q",
+            })
+          }
+        })(document,"script");
+      </script>
 </body>
-</html>

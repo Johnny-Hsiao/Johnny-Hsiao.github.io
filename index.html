@@ -2,7 +2,8 @@
 </head>
 <body>
   <p>Test chat page</p>
-      <script>
+      <!-- staging chat integration -->
+      <!-- <script>
         (function(d,t) {
           var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
           g.src="https://test.ca.one-stop-talk.stg.gcp.trchq.com/embed.js"
@@ -15,5 +16,21 @@
             })
           }
         })(document,"script");
+      </script> -->
+
+      <!-- dev chat integration -->
+      <script>
+        (function (d, t) {
+          var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+          g.src = "https://test.ca.one-stop-talk.dev.gcp.trchq.com/embed.js"
+          s.parentNode.insertBefore(g, s);
+          g.onload = function () {
+            new window.VirtualCareMessengerEncrypted({
+              domain: 'https://test.ca.one-stop-talk.dev.gcp.trchq.com',
+              ws: 'wss://test.ca.one-stop-talk.dev.gcp.trchq.com/cable',
+              app_id: "XhaeaVJPLz73QUMP5LzFrTt9"
+            })
+          }
+        })(document, "script");
       </script>
 </body>

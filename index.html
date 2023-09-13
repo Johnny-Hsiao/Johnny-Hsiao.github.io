@@ -1,8 +1,414 @@
+<html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <script src="https://unpkg.com/knockout@3.5.1/build/output/knockout-latest.js"></script>
+  <script src="https://unpkg.com/survey-knockout@1.9.96/survey.ko.min.js"></script>
+  <link
+    href="https://unpkg.com/survey-core@1.9.96/modern.min.css"
+    type="text/css"
+    rel="stylesheet"
+  />
+  <style>
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .profiler-results {
+      display: none;
+    }
+
+    .assessment-container {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #surveyContainer {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      min-width: 330px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      flex-direction: row;
+    }
+
+    .toolbar:empty {
+      display: none;
+    }
+
+    .toolbar.bottom-toolbar {
+      padding: 10px 0;
+    }
+
+    .toolbar .toolbar-button {
+      -webkit-box-align: center;
+      align-items: center;
+      border-radius: 0.25rem;
+      --tw-text-opacity: 1;
+      color: rgba(67, 56, 202, var(--tw-text-opacity));
+      --tw-bg-opacity: 1;
+      background-color: rgba(224, 231, 255, var(--tw-bg-opacity));
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 500;
+      margin: 5px;
+      border: none !important;
+    }
+
+    .toolbar .toolbar-button:hover {
+      background-color: rgba(199, 210, 254, var(--tw-bg-opacity));
+    }
+
+    .toolbar .toolbar-button:disabled {
+      background-color: rgba(224, 231, 255, var(--tw-bg-opacity));
+      color: rgba(80, 80, 80, var(--tw-text-opacity));
+    }
+
+    .disabled-nav-button input {
+      background-color: rgba(80, 80, 80, 0.5) !important;
+      cursor: default;
+    }
+
+    .sv-tagbox.sv-tagbox--empty .question-hint,
+    .sv-tagbox.sv-tagbox--empty .sv-tagbox__filter-string-input {
+      width: 100%;
+    }
+
+    .sv-tagbox__item {
+      height: auto;
+    }
+
+    .sv-tagbox__value.sv-dropdown__value {
+      overflow-y: auto;
+    }
+
+    .sv-tagbox.sv-tagbox .question-hint-suffix,
+    .sv-dropdown__filter-string-input {
+      height: 100% !important;
+      --tw-ring-color: transparent !important;
+    }
+
+  </style>
 </head>
 <body>
   <p>Test chat page</p>
+
+  <div class="assessment-container">
+      <div class="toolbar top-toolbar"></div>
+      <div id="surveyContainer">
+        <div id="surveyContent"></div>
+      </div>
+      <div class="toolbar bottom-toolbar"></div>
+    </div>
+    <script type="text/javascript">
+      (function () {
+        var field = {
+    "command": "submit",
+    "location": "messenger",
+    "action": {
+        "type": "submit"
+    },
+    "values": {
+        "show_save_btn": false,
+        "sender_id": 2,
+        "template": {
+            "id": 3,
+            "title": "Intake",
+            "active": true,
+            "prompt_for_password": false,
+            "created_at": "2023-09-13T20:18:00.709Z",
+            "updated_at": "2023-09-13T20:18:00.709Z",
+            "version": 10,
+            "content": {
+                "pages": [
+                    {
+                        "name": "page2",
+                        "elements": [
+                            {
+                                "name": "Seeing Someone",
+                                "type": "radiogroup",
+                                "title": "Are you currently seeing a physician",
+                                "choices": [
+                                    {
+                                        "text": "Yes",
+                                        "value": "item1"
+                                    },
+                                    {
+                                        "text": "No",
+                                        "value": "item2"
+                                    },
+                                    {
+                                        "text": "maybe",
+                                        "value": "item3"
+                                    }
+                                ],
+                                "isRequired": true
+                            },
+                            {
+                                "name": "What Type",
+                                "type": "dropdown",
+                                "title": "What type of physician are you seeing? ",
+                                "choices": [
+                                    {
+                                        "text": "General Practitioner ",
+                                        "value": "item1"
+                                    },
+                                    {
+                                        "text": "Specialist",
+                                        "value": "item2"
+                                    }
+                                ],
+                                "visibleIf": "{Seeing Someone} = \"item1\"",
+                                "isRequired": true
+                            },
+                            {
+                                "name": "When was the last time you saw a provider?",
+                                "type": "datepicker",
+                                "visibleIf": "{Seeing Someone} = \"item2\""
+                            }
+                        ]
+                    },
+                    {
+                        "name": "page3",
+                        "elements": [
+                            {
+                                "name": "Medication",
+                                "type": "radiogroup",
+                                "title": "Are you currently on any medication? ",
+                                "choices": [
+                                    {
+                                        "text": "Yes",
+                                        "value": "item1"
+                                    },
+                                    {
+                                        "text": "No",
+                                        "value": "item2"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "question2",
+                                "type": "comment",
+                                "title": "Please list out the medication you are on",
+                                "width": "350",
+                                "visibleIf": "{Medication} = \"item1\"",
+                                "isRequired": true
+                            },
+                            {
+                                "name": "All that Apply",
+                                "type": "checkbox",
+                                "title": "Please select all that apply ",
+                                "choices": [
+                                    {
+                                        "text": "I have a chronic medical condition",
+                                        "value": "item1"
+                                    },
+                                    {
+                                        "text": "I am diagnosed with a psychiatric/mental condition",
+                                        "value": "item2"
+                                    },
+                                    {
+                                        "text": "I have an acute medical condition",
+                                        "value": "item3"
+                                    },
+                                    {
+                                        "text": "I do not have an acute or a chronic medical condition",
+                                        "value": "item4"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "question3",
+                                "type": "comment",
+                                "title": "Please list out the condition(s)",
+                                "visibleIf": "{All that Apply} <> [\"item4\"]",
+                                "isRequired": true
+                            },
+                            {
+                                "name": "question4",
+                                "type": "bootstrapslider",
+                                "title": "On a scale of 1 to 10 (1 being not comfortable at all 10 being very comfortable), how comfortable are you with injection needles? ",
+                                "rangeMax": 10
+                            }
+                        ]
+                    },
+                    {
+                        "name": "page3.5",
+                        "elements": [
+                            {
+                                "name": "Coverage",
+                                "type": "radiogroup",
+                                "title": "Do you have insurance coverage? ",
+                                "choices": [
+                                    {
+                                        "text": "Yes",
+                                        "value": "item1"
+                                    },
+                                    {
+                                        "text": "No",
+                                        "value": "item2"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "question6",
+                                "type": "text",
+                                "title": "What is the percentage of coverage? ",
+                                "enableIf": "{Coverage} = \"item1\"",
+                                "isRequired": true,
+                                "validators": [
+                                    {
+                                        "type": "numeric",
+                                        "maxValue": 100,
+                                        "minValue": 1
+                                    }
+                                ],
+                                "requiredErrorText": "Please enter a value above 1%"
+                            },
+                            {
+                                "html": "<body> \nBased on the percentage you put in, you will be responsible for the difference in cost. \n</body>",
+                                "name": "question5",
+                                "type": "html",
+                                "visibleIf": "{question6} <= 99.9"
+                            }
+                        ]
+                    }
+                ],
+                "title": "Intake Assessment Form One",
+                "introText": "Please fill out the intake assessment form.",
+                "introTitle": "Welcome",
+                "completedText": "You rocked it!!",
+                "completedTitle": "Thank you!",
+                "firstPageIsStarted": true
+            },
+            "data_mapping": [],
+            "questions_on_page_mode": "single-page"
+        },
+        "content": {},
+        "language": "en",
+        "message_key": "HERaVq7SXcDrsTsS6rXqaDp6",
+        "started_at": "2023-09-13T20:19:07.306+00:00"
+    }
+}
+        var themeColor = "#121212";
+        var values = field.values;
+        var buttons = values.buttons || [];
+        var lang = values.language || "en";
+
+        // override the default theme colors
+        const defaultThemeColors = Survey
+                                    .StylesManager
+                                    .ThemeColors.modern;
+
+        defaultThemeColors['$main-color'] = `${themeColor}`;
+        defaultThemeColors['$add-button-color'] = `${themeColor}`;
+        defaultThemeColors['$primary'] = `${themeColor}`;
+
+        // Add 33 at the end of the hex to add 0.2 opacity ie.RRGGBBAA hex notation
+        defaultThemeColors['$answer-background-color'] = `${themeColor}33`;
+        defaultThemeColors['$primary-light'] = `${themeColor}33`;
+
+        const customCss = {
+          "question": {
+            "hint": "question-hint",
+            "hintSuffixWrapper": "question-hint-suffix"
+          }
+        };
+
+        // initialize survey
+        Survey.StylesManager.applyTheme('modern');
+        var survey = new Survey.Model(values.template.content);
+
+        // load values
+        survey.data = values.content;
+        survey.locale = lang;
+        survey.css = customCss;
+
+        if (values.readonly) {
+          survey.mode = 'display';
+        } else {
+          survey.onComplete.add(() => sendMessage(survey.data, 'submit'));
+
+          // add aditional nav buttons
+          buttons.forEach(function (button, index) {
+            if (button.location) {
+              return;
+            }
+
+            var btn = createNavigationButton('button ' + index, button, function () {
+              sendMessage(survey.data, button.command);
+            });
+            survey.addNavigationItem(btn);
+          });
+        }
+
+        // add toolbar buttons
+        buttons.forEach(function (button, index) {
+          if (!button.location) {
+            return;
+          } 
+
+          var btn = createToolbarButton('button ' + index, button, function () {
+            sendMessage(survey.data, button.command);
+          });
+          addToolbarButton(btn, button.location);
+        });
+
+        function sendMessage(content, command) {
+          window.parent.postMessage(
+            {
+              chaskiqMessage: true,
+              type: 'Assessments',
+              field: Object.assign({}, field, {
+                command: command,
+                values: Object.assign({}, field.values, { content: content }),
+              }),
+            },
+            '*'
+          );
+        }
+
+        function createToolbarButton(id, button, handler) {
+          var btn = document.createElement('button');
+          btn.id = id;
+          btn.className = 'transition duration-150 ease-in-out toolbar-button';
+          btn.addEventListener('click', handler);
+          btn.innerText = button.title;
+          btn.disabled = typeof button.enabled === 'undefined' ? false : !button.enabled;
+          return btn;
+        }
+
+        function createNavigationButton(id, button, handler) {
+          var enabled = typeof button.enabled === 'undefined' ? true : button.enabled;
+          var btn = {
+            id: id,
+            title: button.title,
+            action: enabled ? handler : undefined,
+            css: enabled ? undefined : 'disabled-nav-button',
+          };
+          return btn;
+        }
+
+        function addToolbarButton(btn, location) {
+          document.querySelector(`.${location}`).appendChild(btn);
+        }
+
+        survey.render("surveyContent");
+      })();
+    </script>
+
+
+  
       <!-- sbx digital front door chat integration -->
 <!--   <script>
         (function(d,t) {
@@ -127,3 +533,4 @@
   })(window,document,window['_fs_namespace'],'script','user');
   </script> -->
 </body>
+</html>
